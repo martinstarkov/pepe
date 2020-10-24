@@ -1,11 +1,13 @@
 #include "FlightComputer.h"
 
-std::unique_ptr<FlightComputer> FlightComputer::instance_;
+#include <cassert> // assert
+
+std::unique_ptr<FlightComputer> FlightComputer::instance_ = nullptr;
 
 FlightComputer& FlightComputer::Get() {
     if (!instance_) {
         instance_ = std::make_unique<FlightComputer>();
-    } 
+    }
     return *instance_;
 }
 

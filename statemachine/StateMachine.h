@@ -24,11 +24,7 @@ enum class State {
     // Do not add anything after STATE_COUNT.
     // It is used in creating the states array in the StateMachine. 
     STATE_COUNT
-}
-
-constexpr std::size_t StateCount = 5;
-
-using StateFuncPtr = void (*)();
+};
 
 class StateMachine {
 public:
@@ -42,5 +38,5 @@ public:
 private:
     // Variable storing the current state
     State current_state_;
-    std::array<std::unique_ptr<BaseState>, STATE_COUNT> states;
+    std::array<std::unique_ptr<BaseState>, static_cast<std::size_t>(State::STATE_COUNT)> states;
 };
