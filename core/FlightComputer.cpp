@@ -1,6 +1,7 @@
 #include "FlightComputer.h"
 
 #include <cassert> // assert
+#include <sensors/SensorController.h>
 
 std::unique_ptr<FlightComputer> FlightComputer::instance_ = nullptr;
 
@@ -20,11 +21,13 @@ void FlightComputer::Start() {
 FlightComputer::FlightComputer() {
     state_machine = std::make_unique<StateMachine>();
     state_machine->Init(State::GROUNDED);
+    SensorController::Init();
 }
 
 void FlightComputer::Loop() {
     while (running_) {
         assert(state_machine != nullptr && "State machine cannot be updated if it has not been created in the flight computer's constructor");
+        SensorController::Update();
         state_machine->Update();
     }
 }

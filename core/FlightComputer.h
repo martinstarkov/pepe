@@ -6,11 +6,11 @@
 
 class FlightComputer {
 public:
+    FlightComputer();
     static FlightComputer& Get();
     static void Stop();
     void Start();
 private:
-    FlightComputer();
     std::unique_ptr<StateMachine> state_machine = nullptr;
     void Loop();
     void SetRunning(bool state);
