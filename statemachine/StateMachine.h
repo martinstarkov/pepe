@@ -5,14 +5,18 @@
 #include <memory> // std::unique_ptr
 #include <cassert> // assert
 
+class StateMachine;
+
 class BaseState {
 public:
-    BaseState(StateMachine& parent_state_machine) : state_machine{ parent_state_machine } {}
+    virtual void SetMachine(StateMachine* parent_state_machine) {
+        state_machine = parent_state_machine;
+    }
     virtual void Update() {}
     virtual void OnEntry() {}
     virtual void OnExit() {}
 protected:
-    StateMachine& state_machine;
+    StateMachine* state_machine = nullptr;
 };
 
 enum class State {
@@ -21,6 +25,7 @@ enum class State {
     ASCENDING,
     DESCENDING,
     LANDED,
+    ABORT,
     // Do not add anything after STATE_COUNT.
     // It is used in creating the states array in the StateMachine. 
     STATE_COUNT
@@ -37,6 +42,6 @@ public:
     State GetCurrentState();
 private:
     // Variable storing the current state
-    State current_state_;
+    State current_state_ = State::STATE_COUNT;
     std::array<std::unique_ptr<BaseState>, static_cast<std::size_t>(State::STATE_COUNT)> states;
 };
